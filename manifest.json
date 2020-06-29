@@ -1,0 +1,27 @@
+{
+  "name": "template-dev",
+  "label": "",
+  "description": "",
+  "version": "0.0.0",
+  "custom": {
+    "gear-builder": {
+      "category": "converter",
+      "image": "flywheel/template-dev:0.0.0"
+    },
+    "flywheel": {
+      "suite": "Template"
+    }
+  },
+  "inputs": {
+  },
+  "config": {
+  },
+  "environment": {},
+  "command": "./run.py",
+  "author": "Flywheel",
+  "maintainer": "Flywheel <support@flywheel.io>",
+  "cite": "",
+  "license": "Other",
+  "source": "https://github.com/flywheel-apps/template-dev",
+  "url": ""
+}
