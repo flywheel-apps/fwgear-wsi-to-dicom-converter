@@ -31,4 +31,5 @@ RUN dpkg -i ./wsi2dcm_$VERSION.deb && rm ./wsi2dcm_$VERSION.deb
 
 COPY run.py manifest.json $FLYWHEEL/
 RUN chmod +x $FLYWHEEL/run.py
+ENTRYPOINT /bin/bash
 
