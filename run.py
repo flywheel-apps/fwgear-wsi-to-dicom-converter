@@ -51,8 +51,6 @@ def setup(context):
     
     # Give the series description some name if not specified
     if 'seriesDescription' not in input_keys:
-        input = context.get_input('Input_file')
-        print(input)
 
         series_description = Path(context.get_input_path("Input_file")).stem
         
@@ -81,7 +79,8 @@ def run(command):
     pr.wait()
     rc = pr.returncode
     if rc != 0:
-        context.log.error('Error running WIS')
+        context.log.warning("WIS did not return 0, but the return code is unreliable. \n"
+                          "The output folder will be checked for processed files")
     return(rc)
 
 def cleanup(context, output_dir):
@@ -94,8 +93,11 @@ def cleanup(context, output_dir):
     src_files = os.listdir(dicom_directory)
     
     if len(src_files) == 0:
-        log.error('No files generated.  Assuming error')
+        context.log.error('No files generated.  Assuming error')
         raise Exception('No output Files Generated')
+    
+    else:
+        context.log.info(f'{len(src_files)} successfully created')
     
     for file_name in src_files:
         full_file_name = os.path.join(dicom_directory, file_name)
@@ -112,7 +114,6 @@ if __name__ == '__main__':
         try:
             context.init_logging()
             context.log_config()
-            print(os.listdir('/flywheel/v0'))
             
             valid = fail_check(context)
             context.log.info(f'Input file is valid:   {valid}')

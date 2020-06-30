@@ -2,7 +2,7 @@
   "name": "wsi-to-dicom",
   "label": "WSI to dicom",
   "description": "This gear contains a tool that converts whole slide images (WSIs) to DICOM. To read the underlying whole slide images (WSIs), this tool relies on OpenSlide, which supports a variety of file formats.",
-  "version": "0.0.10",
+  "version": "0.0.13",
   "custom": {
     "gear-builder": {
       "category": "converter",
