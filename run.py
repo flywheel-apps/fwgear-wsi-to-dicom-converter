@@ -16,7 +16,7 @@ def fail_check(context):
     expected_extension = ".svs"
     
     try:
-        passes = file.is_valid(input_path, expected_extension)
+        passes = file.is_valid(input_path)#, expected_extension)
     except FileNotFoundError as e:
         context.log.exception(e)
         raise(e)
