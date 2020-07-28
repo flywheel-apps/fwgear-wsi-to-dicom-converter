@@ -69,40 +69,50 @@ def setup(context):
     
     context.log.info("Command to call: \n" + " ".join(command))
     
-    return(command, series_description)
+    return(command, series_description, output_dir)
 
 
 
-def run(command):
+def run(log, command):
     
-    pr = sp.Popen(command, shell=False)
-    pr.wait()
-    rc = pr.returncode
+    try:
+        pr = sp.Popen(command, shell=False)
+        pr.wait()
+        rc = pr.returncode
+    except Exception as e:
+        log.error(f"Command {command} failed")
+        log.exception(e)
+        rc = 6
+        
+    
+    
     if rc != 0:
-        context.log.warning("WIS did not return 0, but the return code is unreliable. \n"
+        log.warning("WIS did not return 0, but the return code is unreliable. \n"
                           "The output folder will be checked for processed files")
     return(rc)
 
-def cleanup(context, output_dir):
+def cleanup(log, dicom_directory, output_dir):
     # Changed from analysis to converter
     # zipped_output = context.output_dir/Path(f'{output_dir}.zip')
     # zip_tools.zip_output(context.work_dir, zipped_output)
     
-    dicom_directory = context.work_dir/output_dir
     
     src_files = os.listdir(dicom_directory)
     
     if len(src_files) == 0:
-        context.log.error('No files generated.  Assuming error')
+        log.error('No files generated.  Assuming error')
         raise Exception('No output Files Generated')
     
     else:
-        context.log.info(f'{len(src_files)} successfully created')
+        log.info(f'{len(src_files)} successfully created')
     
+    
+    # This prevents the script from coppying in subdirectories to the output.  I don't
+    # Think this particular gear does that anyway, though.
     for file_name in src_files:
         full_file_name = os.path.join(dicom_directory, file_name)
         if os.path.isfile(full_file_name):
-            dest = context.output_dir/Path(file_name)
+            dest = output_dir/Path(file_name)
             os.rename(full_file_name, dest)
             
 
@@ -118,13 +128,13 @@ if __name__ == '__main__':
             valid = fail_check(context)
             context.log.info(f'Input file is valid:   {valid}')
             
-            command, series_description = setup(context)
+            command, series_description, output_folder = setup(context)
             
             rc = run(command)
             # return code currently unreliable
             context.log.info(f'Exit Code: {rc}')
             
-            cleanup(context, series_description)
+            cleanup(context.log, output_folder, context.output_dir)
             
         except Exception as e:
             context.log.error('Error running gear')

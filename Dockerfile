@@ -20,8 +20,8 @@ RUN echo "deb http://us.archive.ubuntu.com/ubuntu/ focal universe" | tee -a /etc
         libgtest-dev
 
 ENV FLYWHEEL="/flywheel/v0"
-COPY ["requirements.txt", "/opt/requirements.txt"]
-RUN pip3 install -r /opt/requirements.txt \
+COPY ["requirements.txt", "/tmp/requirements.txt"]
+RUN pip3 install -r /tmp/requirements.txt \
     && mkdir -p $FLYWHEEL
 
 WORKDIR $FLYWHEEL
