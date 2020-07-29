@@ -1,6 +1,5 @@
 import sys
 import os
-sys.path.append('/Users/davidparker/Documents/Flywheel/SSE/MyWork/Gears/WSI/fwgear-wsi-to-dicom-converter')
 import run
 import logging
 import tempfile
