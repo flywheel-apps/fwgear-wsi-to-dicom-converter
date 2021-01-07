@@ -6,7 +6,7 @@
     "custom": {
         "docker-image": "flywheel/wsi-to-dicom:0.1.4_1.0.3",
         "gear-builder": {
-            "category": "analysis",
+            "category": "converter",
             "image": "flywheel/wsi-to-dicom:0.1.4_1.0.3"
         },
         "flywheel": {
