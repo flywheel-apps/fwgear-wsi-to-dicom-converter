@@ -46,14 +46,14 @@ def fail_check(context):
         passes = file.is_valid(input_path)  # , expected_extension)
     except FileNotFoundError as e:
         context.log.exception(e)
-        raise (e)
+        raise e
     except TypeError as e:
         context.log.exception(e)
-        raise (e)
+        raise e
     except Exception as e:
         context.log.warning(f"Problem with {input_path}")
         context.log.exception(e)
-        raise (e)
+        raise e
 
     return passes
 
@@ -105,7 +105,7 @@ def setup(context):
 
     context.log.info("Command to call: \n" + " ".join(command))
 
-    return (command, series_description, output_dir)
+    return command, series_description, output_dir
 
 
 def run(log, command):
