@@ -34,19 +34,16 @@
         "tileHeight": {
             "default": 500,
             "description": "Tile height px.",
-            "optional": true,
             "type": "integer"
         },
         "tileWidth": {
             "default": 500,
             "description": "Tile width px.",
-            "optional": true,
             "type": "integer"
         },
         "levels": {
             "default": 0,
             "description": "Number of levels to generate, levels == 0 means number of levels will be read from wsi file.",
-            "optional": true,
             "type": "integer"
         },
         "downsamples": {
@@ -57,19 +54,16 @@
         "startOn": {
             "default": 0,
             "description": "Level to start generation.",
-            "optional": true,
             "type": "integer"
         },
         "stopOn": {
             "default": -1,
-            "description": "Level to stop generation.",
-            "optional": true,
+            "description": "Level to stop generation (\"Max Level\" is -1).",
             "type": "integer"
         },
         "sparse": {
             "default": false,
             "description": "Use TILED_SPARSE frame organization, by default it's TILED_FULL",
-            "optional": true,
             "type": "boolean"
         },
         "compression": {
@@ -99,26 +93,22 @@
         },
         "batch": {
             "default": -1,
-            "description": "Maximum frames in one file, as limit is exceeded new files is started.",
-            "optional": true,
+            "description": "Maximum frames in one file, as limit is exceeded new files is started (\"No Maximum\" is -1).",
             "type": "integer"
         },
         "threads": {
             "default": -1,
-            "description": "number of threads",
-            "optional": true,
+            "description": "number of threads (\"Maximum Threads\" is -1)",
             "type": "integer"
         },
         "debug": {
             "default": false,
             "description": "Print debug messages: dimensions of levels, size of frames.",
-            "optional": true,
             "type": "boolean"
         },
         "dropFirstRowAndColumn": {
             "default": false,
             "description": "Drop first row and column of the source image in order to workaround bug",
-            "optional": true,
             "type": "boolean"
         }
     },

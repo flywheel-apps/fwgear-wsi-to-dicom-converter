@@ -28,7 +28,7 @@ The wsiToDcm script frequently returns non-zero codes, despite running successfu
 no error messages.  Because of this, the gear cannot rely on the return code to indicate
 success or failure of the code.  Therefor, the creation of any number of output files
 is considered a successful run.  Please carefully examine the output of this gear to
-ensure that it did run successfully. 
+ensure that it did run successfully.
 
 
 ## Complete set of parameters
@@ -52,15 +52,15 @@ ensure that it did run successfully.
     - level2 10x10
 
 * **startOn**  (optional): Level to start generation.  (Default 0).
-* **stopOn**  (optional): Level to stop generation.  (Default -1).
-* **sparse**  (optional): Use TILED_SPARSE frame organization, by default it&#x27;s TILED_FULL  (Default False).
+* **stopOn**  (optional): Level to stop generation.  ("Max Level" is -1, Default -1).
+* **sparse**  (optional): Use TILED_SPARSE frame organization, by default it's TILED_FULL  (Default False).
 * **compression** (required): Compression, supported compressions: jpeg, jpeg2000, raw.  (Default jpeg).
-* **seriesDescription**  (optional): (0008,103E) [LO] SeriesDescription Dicom tag. 
-* **studyId**  (optional): (0020,000D) [UI] StudyInstanceUID Dicom tag. 
-* **seriesId**  (optional): (0020,000E) [UI] SeriesInstanceUID Dicom tag. 
-* **batch**  (optional): Maximum frames in one file, as limit is exceeded new files is started.  (Default -1).
+* **seriesDescription**  (optional): (0008,103E) [LO] SeriesDescription Dicom tag.
+* **studyId**  (optional): (0020,000D) [UI] StudyInstanceUID Dicom tag.
+* **seriesId**  (optional): (0020,000E) [UI] SeriesInstanceUID Dicom tag.
+* **batch**  (optional): Maximum frames in one file, as limit is exceeded new files is started.  ("No Maximum" is -1, Default -1).
 
     eg: 3 files will be generated if batch is 10 and 30 frames in level
-* **threads** (optional): Threads to consume during execution (Default -1)
+* **threads** (optional): Threads to consume during execution ("Maximum Threads" is -1, Default -1)
 * **debug**  (optional): Print debug messages: dimensions of levels, size of frames. (Default False).
 * **dropFirstRowAndColumn**  (optional): Drop first row and column of the source image in order to workaround [bug](https://github.com/openslide/openslide/issues/268) (Default False).
