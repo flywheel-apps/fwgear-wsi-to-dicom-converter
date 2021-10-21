@@ -149,9 +149,9 @@ def cleanup(dicom_directory, output_dir):
         if os.path.isfile(full_file_name):
 
             if os.path.splitext(Path(file_name))[1] == '.dcm':
-                if not os.path.exists(dicom_directory / Path('dcms_to_zip')):
-                    os.mkdir(dicom_directory / Path('dcms_to_zip'))
-                dest = dicom_directory / Path('dcms_to_zip') / Path(file_name)
+                if not os.path.exists(dicom_directory / 'dcms_to_zip'):
+                    os.mkdir(dicom_directory / 'dcms_to_zip')
+                dest = dicom_directory / 'dcms_to_zip' / Path(file_name)
 
             else:
                 dest = output_dir / Path(file_name)
@@ -159,7 +159,7 @@ def cleanup(dicom_directory, output_dir):
             os.rename(full_file_name, dest)
 
     col = DICOMCollection.from_dir(dicom_directory / Path('dcms_to_zip'))
-    col.to_zip(output_dir / Path('results.zip'))
+    col.to_zip(output_dir / Path('CMU-1.dicom.zip'))
 
 
 if __name__ == "__main__":
