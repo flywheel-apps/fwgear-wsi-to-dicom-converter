@@ -159,7 +159,15 @@ def cleanup(dicom_directory, output_dir):
             os.rename(full_file_name, dest)
 
     col = DICOMCollection.from_dir(dicom_directory / Path('dcms_to_zip'))
-    col.to_zip(output_dir / Path('CMU-1.dicom.zip'))
+
+    split_1 = str(context.get_input_path("Input_file")).split('.svs')
+    split_2 = str(Path(context.get_input_path("Input_file")).stem).split('.')
+    if len(split_1) > 1:
+        output_stem = Path(split_1[0]).stem
+    else:
+        output_stem = split_2[0]
+
+    col.to_zip(output_dir / Path(f'{output_stem}.dicom.zip'))
 
 
 if __name__ == "__main__":
