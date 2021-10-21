@@ -151,7 +151,7 @@ def cleanup(dicom_directory, output_dir):
             if os.path.splitext(Path(file_name))[1] == '.dcm':
                 if not os.path.exists(dicom_directory / 'dcms_to_zip'):
                     os.mkdir(dicom_directory / 'dcms_to_zip')
-                dest = dicom_directory / 'dcms_to_zip' / Path(file_name)
+                dest = dicom_directory / 'dcms_to_zip' / file_name
 
             else:
                 dest = output_dir / Path(file_name)
