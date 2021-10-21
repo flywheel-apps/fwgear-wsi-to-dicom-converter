@@ -148,7 +148,7 @@ def cleanup(dicom_directory, output_dir):
 
         if os.path.isfile(full_file_name):
 
-            if os.path.splitext(Path(file_name))[1] == '.dcm':
+            if Path(file_name).suffix == '.dcm':
                 if not os.path.exists(dicom_directory / 'dcms_to_zip'):
                     os.mkdir(dicom_directory / 'dcms_to_zip')
                 dest = dicom_directory / 'dcms_to_zip' / file_name
@@ -160,12 +160,16 @@ def cleanup(dicom_directory, output_dir):
 
     col = DICOMCollection.from_dir(dicom_directory / Path('dcms_to_zip'))
 
-    split_1 = str(context.get_input_path("Input_file")).split('.svs')
-    split_2 = str(Path(context.get_input_path("Input_file")).stem).split('.')
-    if len(split_1) > 1:
-        output_stem = Path(split_1[0]).stem
-    else:
-        output_stem = split_2[0]
+
+    allowed_exts = [".svslide", ".svs", ".tiff", ".tif", ".vms", ".vmu", ".ndpi", ".scn", ".mrxs", ".bif"]
+    output_stem = None
+    for ext in allowed_exts:
+        split_opt = str(context.get_input_path("Input_file")).split(ext)
+        if len(split_opt) > 1:
+            output_stem = Path(split_opt[0]).stem
+            break
+    if not output_stem:
+        output_stem = str(Path(context.get_input_path("Input_file")).stem).split('.')[0]
 
     col.to_zip(output_dir / Path(f'{output_stem}.dicom.zip'))
 
