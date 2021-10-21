@@ -126,7 +126,7 @@ def run(command):
     return rc
 
 
-def cleanup(dicom_directory, output_dir):
+def cleanup(context, dicom_directory, output_dir):
     # Changed from analysis to converter
     # zipped_output = context.output_dir/Path(f'{output_dir}.zip')
     # zip_tools.zip_output(context.work_dir, zipped_output)
@@ -154,12 +154,12 @@ def cleanup(dicom_directory, output_dir):
                 dest = dicom_directory / 'dcms_to_zip' / file_name
 
             else:
-                dest = output_dir / Path(file_name)
+                dest = output_dir / file_name
 
             os.rename(full_file_name, dest)
 
-    col = DICOMCollection.from_dir(dicom_directory / Path('dcms_to_zip'))
-    col.to_zip(output_dir / Path(f'{Path(context.get_input_path("Input_file")).stem}.dicom.zip'))
+    col = DICOMCollection.from_dir(dicom_directory / 'dcms_to_zip')
+    col.to_zip(output_dir / f'{Path(context.get_input_path("Input_file")).stem}.dicom.zip')
 
 
 if __name__ == "__main__":
@@ -178,7 +178,7 @@ if __name__ == "__main__":
             # return code currently unreliable
             log.info(f"Exit Code: {rc}")
 
-            cleanup(output_folder, context.output_dir)
+            cleanup(context, output_folder, context.output_dir)
 
         except Exception as e:
             log.error("Error running gear")
