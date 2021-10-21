@@ -159,19 +159,7 @@ def cleanup(dicom_directory, output_dir):
             os.rename(full_file_name, dest)
 
     col = DICOMCollection.from_dir(dicom_directory / Path('dcms_to_zip'))
-
-
-    allowed_exts = [".svslide", ".svs", ".tiff", ".tif", ".vms", ".vmu", ".ndpi", ".scn", ".mrxs", ".bif"]
-    output_stem = None
-    for ext in allowed_exts:
-        split_opt = str(context.get_input_path("Input_file")).split(ext)
-        if len(split_opt) > 1:
-            output_stem = Path(split_opt[0]).stem
-            break
-    if not output_stem:
-        output_stem = str(Path(context.get_input_path("Input_file")).stem).split('.')[0]
-
-    col.to_zip(output_dir / Path(f'{output_stem}.dicom.zip'))
+    col.to_zip(output_dir / Path(f'{Path(context.get_input_path("Input_file")).stem}.dicom.zip'))
 
 
 if __name__ == "__main__":
