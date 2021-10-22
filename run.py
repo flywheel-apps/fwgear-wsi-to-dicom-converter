@@ -9,10 +9,8 @@ from pathlib import Path
 
 import flywheel_gear_toolkit
 from flywheel_gear_toolkit.utils import file, zip_tools
-from fw_file.dicom import DICOMCollection
 from pathvalidate import sanitize_filepath
 
-log = logging.getLogger(__name__)
 
 def create_sanitized_filepath(filepath):
     """
@@ -26,6 +24,10 @@ def create_sanitized_filepath(filepath):
     Returns:
         str: Path to create symbolic link to original file.
     """
+    try:
+        log
+    except NameError:
+        log = logging.getLogger(__name__)
     filepath = re.sub(r"(t2 ?_?)\*", r"\1star", str(filepath), flags=re.IGNORECASE)
     sanitized_filepath = sanitize_filepath(filepath, platform="auto").replace(" ", "_")
     if filepath != sanitized_filepath:
@@ -43,15 +45,14 @@ def fail_check(context):
     try:
         passes = file.is_valid(input_path)  # , expected_extension)
     except FileNotFoundError as e:
-        log.exception(e)
+        context.log.exception(e)
         raise e
     except TypeError as e:
-        log.exception(e)
+        context.log.exception(e)
         raise e
     except Exception as e:
-        log.warning(f"Problem with {input_path}")
-        log.exception(e)
-
+        context.log.warning(f"Problem with {input_path}")
+        context.log.exception(e)
         raise e
 
     return passes
@@ -102,12 +103,12 @@ def setup(context):
     # Stringify all PATHS in the command for logging stuff.
     command = [str(c) for c in command]
 
-    log.info("Command to call: \n" + " ".join(command))
+    context.log.info("Command to call: \n" + " ".join(command))
 
     return command, series_description, output_dir
 
 
-def run(command):
+def run(log, command):
 
     try:
         pr = sp.Popen(command, shell=False)
@@ -126,7 +127,7 @@ def run(command):
     return rc
 
 
-def cleanup(context, dicom_directory, output_dir):
+def cleanup(log, dicom_directory, output_dir):
     # Changed from analysis to converter
     # zipped_output = context.output_dir/Path(f'{output_dir}.zip')
     # zip_tools.zip_output(context.work_dir, zipped_output)
@@ -143,23 +144,10 @@ def cleanup(context, dicom_directory, output_dir):
     # This prevents the script from coppying in subdirectories to the output.  I don't
     # Think this particular gear does that anyway, though.
     for file_name in src_files:
-
         full_file_name = os.path.join(dicom_directory, file_name)
-
         if os.path.isfile(full_file_name):
-
-            if Path(file_name).suffix == '.dcm':
-                if not os.path.exists(dicom_directory / 'dcms_to_zip'):
-                    os.mkdir(dicom_directory / 'dcms_to_zip')
-                dest = dicom_directory / 'dcms_to_zip' / file_name
-
-            else:
-                dest = output_dir / file_name
-
+            dest = output_dir / Path(file_name)
             os.rename(full_file_name, dest)
-
-    col = DICOMCollection.from_dir(dicom_directory / 'dcms_to_zip')
-    col.to_zip(output_dir / f'{Path(context.get_input_path("Input_file")).stem}.dicom.zip')
 
 
 if __name__ == "__main__":
@@ -167,22 +155,23 @@ if __name__ == "__main__":
     rc = 0
     with flywheel_gear_toolkit.GearToolkitContext() as context:
         try:
+            context.init_logging()
             context.log_config()
 
             valid = fail_check(context)
-            log.info(f"Input file is valid:   {valid}")
+            context.log.info(f"Input file is valid:   {valid}")
 
             command, series_description, output_folder = setup(context)
 
-            rc = run(command)
+            rc = run(context.log, command)
             # return code currently unreliable
-            log.info(f"Exit Code: {rc}")
+            context.log.info(f"Exit Code: {rc}")
 
-            cleanup(context, output_folder, context.output_dir)
+            cleanup(context.log, output_folder, context.output_dir)
 
         except Exception as e:
-            log.error("Error running gear")
-            log.exception(e)
+            context.log.error("Error running gear")
+            context.log.exception(e)
             sys.exit(1)
 
     sys.exit(0)

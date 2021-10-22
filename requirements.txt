@@ -1,5 +1,2 @@
-flywheel-gear-toolkit==0.5.1
+flywheel-gear-toolkit
 pathvalidate>=2.3.0
-backports.zoneinfo
-fw-meta==1.0.0
-fw-file==1.0.0
