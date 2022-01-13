@@ -7,7 +7,7 @@ For more detailed information on this tool, and access to sample data, see the [
 
 The information you need to know to run this as a gear in flywheel is duplicated here:
 
-## Supporred file formats:
+## Supported file formats:
 Currently, this gear supports all file types readable by OpenSlide:
 - Aperio (.svs, .tif)
 - Hamamatsu (.vms, .vmu, .ndpi)
