@@ -1,3 +1,7 @@
+**This repository has been archived. 
+The new source code is hosted at https://gitlab.com/flywheel-io/scientific-solutions/gears/wsi-to-dicom** 
+
+
 # fwgear-wsi-to-dicom-converter
 Flywheel Gear implementation of GCP's conversion tool for converting whole slide images to DICOM
 
